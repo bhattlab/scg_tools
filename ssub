@@ -10,6 +10,7 @@ parser.add_argument('-c', type=int, default=4,
                     help='number of cores [1]')
 parser.add_argument('-t', default=24, type = int,
                     help='time allocation in hours [24]')
+parser.add_argument('--mail', help="Update user on job status changes through email", action='store_true')
 
 parser.add_argument('-n', type=str, required = True,
                     help='Name your job something pithy')
@@ -18,6 +19,9 @@ parser.add_argument('command', metavar='command', type=str, nargs='+',
 
 args = parser.parse_args()
 
-sub = 'sbatch -J {jobname} --mail-type=ALL --mail-user=$(whoami)@stanford.edu -t {time_alloc}:00:00 -p batch -n {cores} --mem={mem} -A asbhatt -o {jobname}.stdout -e {jobname}.stderr --wrap="{command}"'.format(jobname = args.n, time_alloc = args.t, cores = args.c, mem = int(args.m)*1000, command=' '.join(args.command))
+sub = 'sbatch -J {jobname} -t {time_alloc}:00:00 -p batch -n {cores} --mem={mem} -A asbhatt -o {jobname}.stdout -e {jobname}.stderr --wrap="{command}"'.format(jobname = args.n, time_alloc = args.t, cores = args.c, mem = int(args.m)*1000, command=' '.join(args.command))
+
+if args.mail:
+	sub += " --mail-type=ALL --mail-user=$(whoami)@stanford.edu "
 
 os.system(sub)
