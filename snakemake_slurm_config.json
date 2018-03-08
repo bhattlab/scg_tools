@@ -1,0 +1,10 @@
+{
+    "__default__" :
+    {
+        "account" : "asbhatt",
+        "time" : "00:15:00",
+        "n" : 1,
+        "partition" : "batch",
+        "mem" : 4000
+    }
+}
