@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+import os
 
 parser = argparse.ArgumentParser(description='Simple job submission to SCG/SLURM')
 parser.add_argument('-m', type=int, default=4,
@@ -19,4 +20,4 @@ args = parser.parse_args()
 
 sub = 'sbatch -J {jobname} --mail-type=ALL --mail-user=$(whoami)@stanford.edu -t {time_alloc}:00:00 -p batch -n {cores} --mem={mem} -A asbhatt -o {jobname}.stdout -e {jobname}.stderr --wrap="{command}"'.format(jobname = args.n, time_alloc = args.t, cores = args.c, mem = int(args.m)*1000, command=' '.join(args.command))
 
-print(sub)
+os.system(sub)
