@@ -21,7 +21,7 @@ parser.add_argument('command', type=str, nargs='+',
 
 args = parser.parse_args()
 
-sub = 'sbatch -J {jobname} -t {time_alloc}:00:00 -p {batch} -n {cores} --mem={mem} -A asbhatt -o {jobname}.stdout -e {jobname}.stderr --wrap="{command}"'.format(batch = args.p, jobname = args.n, time_alloc = args.hrs, cores = args.t, mem = int(args.m)*1000, command=' '.join(args.command))
+sub = 'sbatch -J {jobname} -t {time_alloc}:00:00 -p {batch} -n {cores} --mem={mem} -A asbhatt -o {jobname}.out -e {jobname}.err --wrap="{command}"'.format(batch = args.p, jobname = args.n, time_alloc = args.hrs, cores = args.t, mem = int(args.m)*1000, command=' '.join(args.command))
 
 if args.mail:
 	sub += " --mail-type=ALL --mail-user=$(whoami)@stanford.edu "
