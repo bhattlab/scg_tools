@@ -1,3 +1,21 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python
 
-srun -p "interactive" $@ --pty bash 
+import argparse
+import os
+
+parser = argparse.ArgumentParser(description='Simple interactive job submission to SCG/SLURM')
+parser.add_argument('-m', type=int, default=4,
+                    help='memory allocation in Gb [4]')
+parser.add_argument('-t', type=int, default=4,
+                    help='number of cores [1]')
+parser.add_argument('-hrs', default=6, type = int,
+                    help='time allocation in hours [6]')
+
+args = parser.parse_args()
+
+sub = 'srun -t {time_alloc}:00:00 -p "interactive" -n {cores} --mem={mem} --pty bash'.format(
+	time_alloc = args.hrs,
+	cores = args.t,
+	mem = int(args.m)*1000)
+
+os.system(sub)
