@@ -10,8 +10,8 @@ parser.add_argument('-p', type=str, default="batch",
                     help='partition [batch]')
 parser.add_argument('-t', type=int, default=4,
                     help='number of cores [1]')
-parser.add_argument('-hrs', default=24, type = int,
-                    help='time allocation in hours [24]')
+parser.add_argument('-hrs', default=6, type = int,
+                    help='time allocation in hours [6]')
 parser.add_argument('--mail', help="Update user on job status changes through email", action='store_true')
 
 parser.add_argument('-n', metavar="jobname", type=str, required = True,
