@@ -8,6 +8,8 @@ parser.add_argument('-m', type=int, default=4,
                     help='memory allocation in Gb [4]')
 parser.add_argument('-p', type=str, default="batch",
                     help='partition [batch]')
+parser.add_argument('-d', type=str,
+                    help='Job dependency (jobid)')
 parser.add_argument('-t', type=int, default=4,
                     help='number of cores [1]')
 parser.add_argument('-hrs', default=6, type = int,
@@ -21,9 +23,20 @@ parser.add_argument('command', type=str, nargs='+',
 
 args = parser.parse_args()
 
-sub = 'sbatch -J {jobname} -t {time_alloc}:00:00 -p {batch} -n {cores} --mem={mem} -A asbhatt -o {jobname}.out -e {jobname}.err --wrap="{command}"'.format(batch = args.p, jobname = args.n, time_alloc = args.hrs, cores = args.t, mem = int(args.m)*1000, command=' '.join(args.command))
+sub = 'sbatch -J {jobname} -t {time_alloc}:00:00 -p {batch} -n {cores} --mem={mem} -A asbhatt -o {jobname}.out -e {jobname}.err --wrap="{command}"'.format(
+	batch = args.p,
+	jobname = args.n,
+	time_alloc = args.hrs,
+	cores = args.t,
+	mem = int(args.m)*1000,
+	command=' '.join(args.command)
+)
 
 if args.mail:
 	sub += " --mail-type=ALL --mail-user=$(whoami)@stanford.edu "
+
+if args.d:
+	print("Incorporating job dependency")
+	sub += ' -d afterany:{dep}'.format(dep = args.d)
 
 os.system(sub)
