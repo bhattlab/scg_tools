@@ -7,7 +7,7 @@ ssub: submit jobs
 inter: launch interactive sessions  
 check: check the status of your jobs  
 cost: your charges over the past day, week, month and year  
-top_users: the hall of fame  
+top_users: the hall of fame.  Top users in terms of cpu-minutes over the past day.  
 
 ## Costs  
 https://drive.google.com/file/d/1KGMNjtvN9BPkmpw7vVjCKbekTIE70E0M/view
