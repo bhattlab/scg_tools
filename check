@@ -2,4 +2,4 @@
 
 echo Total: $(squeue -halu $(whoami) | wc -l)
 echo Running: $(squeue -alu $(whoami) | grep RUNNING -c)
-squeue -halu $(whoami)
+squeue -u $(whoami) -O 'jobid:10,partition:10,name:20,numcpus:5,state:10,reason:10,timeused:12,timeleft'
