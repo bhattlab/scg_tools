@@ -10,7 +10,7 @@ parser.add_argument('-p', type=str, default="batch",
                     help='partition [batch]')
 parser.add_argument('-d', type=str,
                     help='Job dependency (jobid)')
-parser.add_argument('-t', type=int, default=4,
+parser.add_argument('-t', type=int, default=1,
                     help='number of cores [1]')
 parser.add_argument('-hrs', default=6, type = int,
                     help='time allocation in hours [6]')
