@@ -16,7 +16,7 @@ https://drive.google.com/file/d/1KGMNjtvN9BPkmpw7vVjCKbekTIE70E0M/view
 These graphs are made with graphite, which is accessible from the Stanford private network at https://graphite.scg.stanford.edu. Navigating there directly instead of using the links below will show an interface used to build these plots.
 
 Individual footprints  
-http://graphite.scg.stanford.edu/S/J
+http://graphite.scg.stanford.edu/S/N
 
 Collective footprint  
 http://graphite.scg.stanford.edu/S/L
