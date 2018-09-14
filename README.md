@@ -5,9 +5,9 @@ Useful utilities and some collected knowledge for using the Stanford SCG cluster
 ## Utilities
 ssub: submit jobs  
 inter: launch interactive sessions  
-check: check the status of your jobs
-cost: your charges over the past day, week, month and year
-top_users: the hall of fame
+check: check the status of your jobs  
+cost: your charges over the past day, week, month and year  
+top_users: the hall of fame  
 
 ## Costs  
 https://drive.google.com/file/d/1KGMNjtvN9BPkmpw7vVjCKbekTIE70E0M/view
