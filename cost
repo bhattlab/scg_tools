@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo $(sacct -S $(date --date='yesterday' +%Y-%m-%d) -u $(whoami) --format 'elapsedraw' | sum_numbers)*0.12/3600 | bc | xargs echo Last day: \$ | sed 's/$ /$/g'
-echo $(sacct -S $(date --date='last week' +%Y-%m-%d) -u $(whoami) --format 'elapsedraw' | sum_numbers)*0.12/3600 | bc | xargs echo Last week: \$ | sed 's/$ /$/g'
-echo $(sacct -S $(date --date='last month' +%Y-%m-%d) -u $(whoami) --format 'elapsedraw' | sum_numbers)*0.12/3600 | bc | xargs echo Last month: \$ | sed 's/$ /$/g'
-echo $(sacct -S $(date --date='last year' +%Y-%m-%d) -u $(whoami) --format 'elapsedraw' | sum_numbers)*0.12/3600 | bc | xargs echo Last year: \$ | sed 's/$ /$/g'
+echo $(sacct -S $(date --date='yesterday' +%Y-%m-%d) -u $(whoami) --format 'elapsedraw' | sed '1,2d' | tr -d ' ' | paste -sd+ | bc)*0.12/3600 | bc | xargs echo Last day: \$ | sed 's/$ /$/g'
+echo $(sacct -S $(date --date='last week' +%Y-%m-%d) -u $(whoami) --format 'elapsedraw' |  sed '1,2d' | tr -d ' ' | paste -sd+ | bc)*0.12/3600 | bc | xargs echo Last week: \$ | sed 's/$ /$/g'
+echo $(sacct -S $(date --date='last month' +%Y-%m-%d) -u $(whoami) --format 'elapsedraw' | sed '1,2d' | tr -d ' ' | paste -sd+ | bc)*0.12/3600 | bc | xargs echo Last month: \$ | sed 's/$ /$/g'
+echo $(sacct -S $(date --date='last year' +%Y-%m-%d) -u $(whoami) --format 'elapsedraw' |  sed '1,2d' | tr -d ' ' | paste -sd+ | bc)*0.12/3600 | bc | xargs echo Last year: \$ | sed 's/$ /$/g'
