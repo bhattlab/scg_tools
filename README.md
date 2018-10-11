@@ -19,7 +19,7 @@ Individual footprints
 http://graphite.scg.stanford.edu/S/N
 
 Collective footprint  
-http://graphite.scg.stanford.edu/S/L
+http://graphite.scg.stanford.edu/S/V
 
 ## Notes
 
