@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-declare -a arr=("elimoss" "mdurrant" "bfremin" "tamburin" "jribado" "bsiranos")
+declare -a arr=("elimoss" "mdurrant" "bfremin" "tamburin" "jribado" "hsberrol" "bsiranos")
 
 echo Reporting usage for: ${arr[@]}
 for i in "${arr[@]}"
