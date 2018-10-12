@@ -7,6 +7,6 @@ echo Reporting usage for: ${arr[@]}
 for i in "${arr[@]}"
 do
  echo $(sacct -S $(date --date='last week' +%Y-%m-%d) -u $i --format 'elapsedraw' | \
-  sed '1,2d' | tr -d ' ' | paste -sd+ | bc)*0.12/3600 | bc | xargs echo $i last month: \$ | \
+  sed '1,2d' | tr -d ' ' | paste -sd+ | bc)*0.12/3600 | bc | xargs echo $i last week: \$ | \
   sed 's/$ /$/g' &
 done

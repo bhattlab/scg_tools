@@ -182,7 +182,7 @@ PgUp enter   scroll mode for current pane
 ```
 
 As you can see from the screenshot below, using tmux allows you to multiplex several tasks in the same window. Here I'm editiing a Sankefile, executing it, and watchin my cluster jobs all at the same time. Once you get comfortable with windows and panes this will be a huge productivity boost. After you close your teminal session and open back up, reconnecting to the tmux session will allow you to pick up work right where you left off.
-![tmux wizardry](tmux_wizardry.png "Using tmux allows you to multiplex several tasks in the same windows")
+![tmux wizardry](images/tmux_wizardry.png "Using tmux allows you to multiplex several tasks in the same windows")
 
 To resume a tmux session, type `tmux attach`. To make this easy, I have put the following aliases in my `~/.bash_aliases` file (and make sure there is a corresponding line `source ~/bash_aliases` in your `~/.bashrc` file). This gets you back to the same login node every time and attaches to your active tmux session. So when I login to the cluster, I type `go1` and `go2` and I'm right back where I left off.
 ```
