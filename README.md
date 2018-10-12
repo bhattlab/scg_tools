@@ -44,6 +44,8 @@ There is an ongoing effort in the lab to codify analytical processes in snakemak
 
 ### Getting started
 
+*A natural tendency is to do things forever in the first way that worked. Resist this tendency and you will save a lot of time and frustration.*
+
 #### SSH connection to the cluster
 
 In OSX, we use the Terminal application to use the cluster.  In Windows, Cygwin works.  To access the cluster, simply `ssh <your sunetid>@login.scg.stanford.edu` and authenticate.  To avoid the need to authenticate multiple times per day, you can set up a master connection by writing the following to `.ssh/config` on your local machine, after which you can `ssh scg` one time, then connect normally as above without having to authenticate.
@@ -117,16 +119,16 @@ In addition to using Conda to install stuff into the default environment, you ca
 
 #### Path
 
-The path environment is a list of folders.  You can see it with `echo $PATH | tr ':' '\n'`. The system looks through these folders for an appropriate executable whenever you issue a command.  In order to `ls`, for instance, a file called "ls" must be located in a folder within those listed in your path.  To make your future life simple, do this:
+The path environment is a list of folders.  You can see it with `echo $PATH | tr ':' '\n'`. The system looks through these folders for an appropriate executable whenever you issue a command.  In order to `ls`, for instance, a file called "ls" must be located in a folder within those listed in your path. If you want to launch an executable file that is not on your path, you need to spell out its complete absolute path (e.g. `/home/elimoss/nobody/got/time/for/this.sh`).  You would rather just write `this.sh` to launch that file! To make your future life simpler, do this:
 
 ```
 echo 'PATH=$PATH:~/local/bin/' >> ~/.bashrc
 mkdir -p ~/local/bin
 cd ~/local/bin
-ln -s path/to/some/executable
+ln -s /absolute/path/to/some/executable
 ```
 
-Then you'll be able to launch stuff just by naming it like anything else!
+Then you'll be able to launch the executable without a complete path to its location!
 
 
 #### Git
@@ -164,11 +166,20 @@ git commit -m "Describe your changes briefly"
 git push
 ```
 
-## Decorations 
-Here are some things we use in the lab to make our experience dealing with SCG easier. 
+*Now that you know how to use git, please apply this knowledge to help us improve this document!*
 
-# tmux 
+### Next steps
+
+After the basics are mastered, there are many (infinite?) things that can be done to improve efficiency, ease, or capability. Here's a useful guide on the subject:
+
+![Is it worth spending time on?](https://imgs.xkcd.com/comics/is_it_worth_the_time.png)
+
+What follows are several improvements that lab members have found to be particularly helpful.
+
+
+#### tmux 
 tmux stands for terminal multiplexer. It allows you to maintain a persistent session on the cluster, which will stick around even after you close the ssh window, put your computer to sleep, etc. There is a barrier to entry, but after learning the basics you'll be very happy with how much can be done with tmux!
+
 [Here](https://gist.github.com/MohamedAlaa/2961058) is a cheatsheet that contains the basic tmux commands. To start a new tmux session, type `tmux`. Any key combination that follows needs to be preceeded by the "prefix" command, that tells tmux you're sending it a command (and not the teminal). The default tmux command is `ctrl+b`. 
 
 I find using multiple windows and multiple panes (splits within a window) to be the most helpful. 
@@ -189,9 +200,3 @@ To resume a tmux session, type `tmux attach`. To make this easy, I have put the 
 alias go1='ssh smsx10srw-srcf-d15-35'
 alias go2='tmux attach'
 ```
-
-## This document is part of a git repository that is housed on Github.  If you can think of improvements or additions to make, please follow these instructions in order to make those changes, commit them and push them to the remote repository for others to benefit from.
-
-
-
-
