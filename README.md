@@ -164,6 +164,32 @@ git commit -m "Describe your changes briefly"
 git push
 ```
 
+## Decorations 
+Here are some things we use in the lab to make our experience dealing with SCG easier. 
+
+# tmux 
+tmux stands for terminal multiplexer. It allows you to maintain a persistent session on the cluster, which will stick around even after you close the ssh window, put your computer to sleep, etc. There is a barrier to entry, but after learning the basics you'll be very happy with how much can be done with tmux!
+[Here](https://gist.github.com/MohamedAlaa/2961058) is a cheatsheet that contains the basic tmux commands. To start a new tmux session, type `tmux`. Any key combination that follows needs to be preceeded by the "prefix" command, that tells tmux you're sending it a command (and not the teminal). The default tmux command is `ctrl+b`. 
+
+I find using multiple windows and multiple panes (splits within a window) to be the most helpful. 
+```
+c            create window
+w            list windows
+"            horizontal pane split
+x            close current pane
+arrow keys   move between panes
+PgUp enter   scroll mode for current pane
+```
+
+As you can see from the screenshot below, using tmux allows you to multiplex several tasks in the same window. Here I'm editiing a Sankefile, executing it, and watchin my cluster jobs all at the same time. Once you get comfortable with windows and panes this will be a huge productivity boost. After you close your teminal session and open back up, reconnecting to the tmux session will allow you to pick up work right where you left off.
+![tmux wizardry](tmux_wizardry.png "Using tmux allows you to multiplex several tasks in the same windows")
+
+To resume a tmux session, type `tmux attach`. To make this easy, I have put the following aliases in my `~/.bash_aliases` file (and make sure there is a corresponding line `source ~/bash_aliases` in your `~/.bashrc` file). This gets you back to the same login node every time and attaches to your active tmux session. So when I login to the cluster, I type `go1` and `go2` and I'm right back where I left off.
+```
+alias go1='ssh smsx10srw-srcf-d15-35'
+alias go2='tmux attach'
+```
+
 ## This document is part of a git repository that is housed on Github.  If you can think of improvements or additions to make, please follow these instructions in order to make those changes, commit them and push them to the remote repository for others to benefit from.
 
 
