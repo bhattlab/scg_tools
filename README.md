@@ -169,7 +169,7 @@ Here are some things we use in the lab to make our experience dealing with SCG e
 
 # tmux 
 tmux stands for terminal multiplexer. It allows you to maintain a persistent session on the cluster, which will stick around even after you close the ssh window, put your computer to sleep, etc. There is a barrier to entry, but after learning the basics you'll be very happy with how much can be done with tmux!
-[Here] is a cheatsheet that contains the basic tmux commands. To start a new tmux session, type `tmux`. Any key combination that follows needs to be preceeded by the "prefix" command, that tells tmux you're sending it a command (and not the teminal). The default tmux command is `ctrl+b`. 
+[Here](https://gist.github.com/MohamedAlaa/2961058) is a cheatsheet that contains the basic tmux commands. To start a new tmux session, type `tmux`. Any key combination that follows needs to be preceeded by the "prefix" command, that tells tmux you're sending it a command (and not the teminal). The default tmux command is `ctrl+b`. 
 
 I find using multiple windows and multiple panes (splits within a window) to be the most helpful. 
 ```
