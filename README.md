@@ -32,7 +32,7 @@ The charges you accrue by running jobs on the cluster is a function of (elapsed 
 
 ## Intro to cluster computing
 
-Please note that everything described here is described more comprehensively elsewhere!  Always read the docs.  Sacrifices in accuracy and thoroughness are made in the interest of basic conceptual scaffolding.
+Please note that everything described here is described more comprehensively elsewhere!  Always read the documentation and/or publications for the tools you use.  Sacrifices in accuracy and thoroughness are made in the interest of basic conceptual scaffolding.
 
 ### The cluster
 
@@ -116,21 +116,6 @@ In addition to using Conda to install stuff into the default environment, you ca
 
  3) Ian would like to run a workflow.  The workflow uses several standalone tools, and several scripts utilizing libraries in R and Python.  In order to run this workflow he must first install its dependencies, which are helpfully written into a `environment.yaml` file that came with the workflow repository (see the section below on Git).  To set up a new environment containing all the workflow dependencies, Ian simply uses `conda env create -f environment.yaml`, replacing hours or days of compiling dependencies from source (back in my day...).
 
-
-#### Path
-
-The path environment is a list of folders.  You can see it with `echo $PATH | tr ':' '\n'`. The system looks through these folders for an appropriate executable whenever you issue a command.  In order to `ls`, for instance, a file called "ls" must be located in a folder within those listed in your path. If you want to launch an executable file that is not on your path, you need to spell out its complete absolute path (e.g. `/home/elimoss/nobody/got/time/for/this.sh`).  You would rather just write `this.sh` to launch that file! To make your future life simpler, do this:
-
-```
-echo 'PATH=$PATH:~/local/bin/' >> ~/.bashrc
-mkdir -p ~/local/bin
-cd ~/local/bin
-ln -s /absolute/path/to/some/executable
-```
-
-Then you'll be able to launch the executable without a complete path to its location!
-
-
 #### Git
 
 Git is an example of "version control" software.  Version control refers to the task of managing changes made to text files.  You know that bullshit where people email files back and forth for review, appending their initials to the filename to indicate that it contains their edits?  Or that bullshit where successive versions of a document exist as separate files with ever multiplying copies of "-FINAL" appended to their names? Those are crimes committed by people who don't know about git.  Don't be those people.
@@ -148,7 +133,7 @@ Here is a basic use case:
 
 ```
 # 3) Clone the repository.  If you're only planning on using the code without modifying it, you're done.
-git clone https://github.com/bhattlab/bhattlab_workflows.git`
+git clone https://github.com/bhattlab/scg_tools.git`
 
 # 4) Make changes
 
@@ -166,7 +151,20 @@ git commit -m "Describe your changes briefly"
 git push
 ```
 
-*Now that you know how to use git, please apply this knowledge to help us improve this document!*
+This is how you use the tools in this repository.  See the next section for an explanation how to make this simpler.
+
+#### Path
+
+The path environment is a list of folders.  You can see it with `echo $PATH | tr ':' '\n'`. The system looks through these folders for an appropriate executable whenever you issue a command.  In order to `ls`, for instance, a file called "ls" must be located in a folder within those listed in your path. If you want to launch an executable file that is not on your path, you need to spell out its complete absolute path (e.g. `/home/elimoss/nobody/got/time/for/this.sh`).  You would rather just write `this.sh` to launch that file! To make your future life simpler, do this:
+
+```
+echo 'PATH=$PATH:~/local/bin/' >> ~/.bashrc
+mkdir -p ~/local/bin
+cd ~/local/bin
+ln -s /absolute/path/to/some/executable
+```
+
+Then you'll be able to launch the executable without a complete path to its location!
 
 ### Next steps
 
