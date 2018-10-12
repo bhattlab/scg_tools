@@ -6,8 +6,8 @@ import os
 parser = argparse.ArgumentParser(description='Simple job submission to SCG/SLURM')
 parser.add_argument('-m', type=int, default=4,
                     help='memory allocation in Gb [4]')
-parser.add_argument('-p', type=str, default="batch",
-                    help='partition [batch]')
+parser.add_argument('-nih', action='store_true', default=False,
+                    help='submit to nih partition [false]')
 parser.add_argument('-a', type=str, default="asbhatt",
                     help='account [asbhatt]')
 parser.add_argument('-d', type=str,
@@ -26,7 +26,7 @@ parser.add_argument('command', type=str, nargs='+',
 args = parser.parse_args()
 
 sub = 'sbatch -J {jobname} -t {time_alloc}:00:00 -p {batch} -n {cores} --mem={mem} -A {acct} -o {jobname}.out -e {jobname}.err --wrap="{command}"'.format(
-	batch = args.p,
+	batch = 'nih_s10' if args.nih else 'batch',
 	jobname = args.n,
 	time_alloc = args.hrs,
 	cores = args.t,
