@@ -7,6 +7,7 @@ Useful utilities and some collected knowledge for using the Stanford SCG cluster
 *inter*: launch interactive sessions  
 *check*: check the status of your jobs  
 *cost*: your charges over the past day, week, month and year  
+*lab_cost*: the charges for our top users over the past week  
 *top_users*: the hall of fame.  Top users in terms of cpu-minutes over the past day.  
 
 ## Costs  
