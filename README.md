@@ -7,6 +7,7 @@ Useful utilities and some collected knowledge for using the Stanford SCG cluster
 *inter*: launch interactive sessions  
 *check*: check the status of your jobs  
 *cost*: your charges over the past day, week, month and year  
+*lab_cost*: the charges for our top users over the past week  
 *top_users*: the hall of fame.  Top users in terms of cpu-minutes over the past day.  
 
 ## Costs  
@@ -29,7 +30,7 @@ http://graphite.scg.stanford.edu/S/V
 
 The charges you accrue by running jobs on the cluster is a function of (elapsed walltime) * (allocated cores). Memory is not considered in determining cost. If you allocate eight cores, your job will cost eight times as much as a job with a single core allocated.  This is true regardless of whether your job is actually using all the cores!  It is therefore important to use your cpu allocation efficiently.  
 
-## Intro
+## Intro to cluster computing
 
 Please note that everything described here is described more comprehensively elsewhere!  Always read the docs.  Sacrifices in accuracy and thoroughness are made in the interest of basic conceptual scaffolding.
 
@@ -63,6 +64,21 @@ Host login.scg.stanford.edu
   ControlMaster no
   ControlPath ~/.ssh/sockets/scg
 ```
+
+#### Filesystem access to the cluster
+
+The files you work with--sequence data, alignments, reference genomes and so on--reside on the cluster, and should never be stored on your computer (i.e. "locally"). Beyond security reasons, this is simply for efficiency and simplicity; your computer is small, slow, and isolated, so should only be used as an interface to connect to the cluster.  However, it is frequently convenient to be able to open files with programs running on your computer, or exchange small items back and forth (like plots or what have you).  For this reason, it is useful to "mount" the cluster's filesystem on your computer--almost as though it were a huge USB flash drive.  This allows you to navigate the cluster's filesystem as though it were on your computer, viewing and manipulating files from the cluster as though they were local.
+
+ 1) Download and install [fuse](https://github.com/osxfuse/osxfuse/releases/download/osxfuse-3.8.2/osxfuse-3.8.2.dmg) and [sshfs](https://github.com/osxfuse/sshfs/releases/download/osxfuse-sshfs-2.5.0/sshfs-2.5.0.pkg).
+ 2) Open Terminal and enter the following, replacing your sunetid where appropriate:
+
+```
+mkdir ~/scg4
+echo 'alias sf="diskutil unmount force ~/scg4_home; sshfs -o follow_symlinks YOURSUNETID@login.scg.stanford.edu:/labs/asbhatt/ ~/scg4"' >> ~/.profile
+source ~/.profile
+```
+
+Now you can use the command `sf` to mount SCG on your local filesystem.  It will appear in the folder scg4 in your home directory.
 
 
 #### Setting up your environment with Conda
