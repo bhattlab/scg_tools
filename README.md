@@ -31,6 +31,8 @@ The charges you accrue by running jobs on the cluster is a function of (elapsed 
 
 ## Intro
 
+Please note that everything described here is described more comprehensively elsewhere!  Always read the docs.  Sacrifices in accuracy and thoroughness are made in the interest of basic conceptual scaffolding.
+
 ### The cluster
 
 A compute cluster consists of one or more login nodes and many worker nodes.  In order to use a cluster, you establish a connection from your computer (e.g. `ssh johndoe@login.scg.stanford.edu`) through which you interact with a login node.  From there, you can see the cluster's filesystem and submit jobs for execution by worker nodes.  This can be done by the `ssub` and `inter` wrappers in the scg_tools repository, for submitted and interactive jobs, respectively.  The tools themselves will explain the options available when invoked with `-h`.  Anything more computationally taxing than filesystem navigation and the like should not be done on the login node.
@@ -38,3 +40,116 @@ A compute cluster consists of one or more login nodes and many worker nodes.  In
 ### Doing stuff
 
 There is an ongoing effort in the lab to codify analytical processes in snakemake workflows.  [Snakemake](https://snakemake.readthedocs.io/en/stable/index.html) is a python tool which automates workflow management.  These workflows can be found in the github bhattlab organization.  Snakemake can interpret a collection of rules, each with defined input and output, and link them together to obtain some final output (e.g. a barplot) from some initial input (e.g. raw read data).  Snakemake can also use the cluster, submitting the tasks associated with individual rules for execution on worker nodes.  This is achieved by following the instructions in the [slurm](https://www.github.com/bhattlab/slurm) repository.
+
+### Getting started
+
+#### SSH connection to the cluster
+
+In OSX, we use the Terminal application to use the cluster.  In Windows, Cygwin works.  To access the cluster, simply `ssh <your sunetid>@login.scg.stanford.edu` and authenticate.  To avoid the need to authenticate multiple times per day, you can set up a master connection by writing the following to `.ssh/config` on your local machine, after which you can `ssh scg` one time, then connect normally as above without having to authenticate.
+
+```
+Host scg
+  HostName login.scg.stanford.edu
+  User yoursunetid
+  PubkeyAuthentication no
+  ControlMaster yes
+  ControlPath ~/.ssh/sockets/scg
+  ControlPersist 10
+
+Host login.scg.stanford.edu
+  HostName login.scg.stanford.edu
+  User yoursunetid
+  PubkeyAuthentication no
+  ControlMaster no
+  ControlPath ~/.ssh/sockets/scg
+```
+
+
+#### Setting up your environment with Conda
+
+An executable is a text file containing code, or a binary file (i.e. non-text and unreadable to humans) which performs some task. Any command resides somewhere on disk as an executable file. An executable may draw upon other executables, or libraries, collections of code which cannot be independently run, in order to function. Your environment refers in part to the collection of executables and libraries which you have available.  
+
+The most straightforward method to setting up your environment is with Conda. This started as an environment and package manager for the Python programming language, but has since grown to cover packages (groups of libraries, executables and other code) for many other languages as well.  This greatly simplifies access to bioinformatic tools, as there are a huge number of packages available which Conda can install automatically. To set it up, do the following:
+
+```
+cd /labs/asbhatt/
+mkdir -p <yourfoldername>/tools
+cd <yourfoldername>/tools
+wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+./Miniconda3-latest-Linux-x86_64.sh
+```
+
+Once you have done this, you have access to your very own copy of Python, together with its package manager, Conda.  Verify that you are using the correct version of Python and Conda with the following:
+
+```
+which python
+which conda
+```
+
+This should verify that you are running executables located in your lab directory.
+
+Conda can now be used to install tools into the default environment, e.g. `conda install numpy`, which installs the NumPy library, providing Python with a large collection of functions and data structures which are useful for data analysis.  Some packages are on different "channels," or collections of packages.  A great many which are relevant to bioinformatics are found in the Bioconda channel.  An example of an installation of one of these: `conda install -c bioconda samtools`.  This installs the samtools tool from the Bioconda channel of the Anaconda cloud (yay conceptual scaffolding).  You can view details pertaining to this package, or search for others, at the [Anaconda](https://anaconda.org/bioconda/samtools) website.  
+
+In addition to using Conda to install stuff into the default environment, you can also set up alternate environments.  These contain entirely parallel copies of everything managed by Conda, including Python, all its libraries, and all other packages Conda manages. Different environments can contain different sets of tools.  This is useful when you want to quickly set up to run a workflow with a long list of dependencies.  Here are a couple scenarios to explain the power of environment management.
+
+ 1) Peter needs samtools.  He uses `conda install samtools` in his default environment and receives an error.  Realizing that samtools is located in the Bioconda channel, he retries this with `conda install -c bioconda samtools` and is on his merry way.
+
+ 2) Samantha needs to use Snakemake to run a workflow.  She uses `conda install -c bioconda snakemake` and is dismayed to find that it requires Python 3.6, and her default environment contains Python 2.7.  In order to run Snakemake, she creates an environment with Python 3.6 with `conda create -n snakemake_environment python=3.6`, then enters it with `source activate snakemake_environment` and finally installs Snakemake into her new environment with her original command.  Samantha has made life difficult for herself--she could have simply used `conda create -n snakemake_environment -c bioconda snakemake` followed by `source activate snakemake` and saved herself a second or two.
+
+ 3) Ian would like to run a workflow.  The workflow uses several standalone tools, and several scripts utilizing libraries in R and Python.  In order to run this workflow he must first install its dependencies, which are helpfully written into a `environment.yaml` file that came with the workflow repository (see the section below on Git).  To set up a new environment containing all the workflow dependencies, Ian simply uses `conda env create -f environment.yaml`, replacing hours or days of compiling dependencies from source (back in my day...).
+
+
+#### Path
+
+The path environment is a list of folders.  You can see it with `echo $PATH | tr ':' '\n'`. The system looks through these folders for an appropriate executable whenever you issue a command.  In order to `ls`, for instance, a file called "ls" must be located in a folder within those listed in your path.  To make your future life simple, do this:
+
+```
+echo 'PATH=$PATH:~/local/bin/' >> ~/.bashrc
+mkdir -p ~/local/bin
+cd ~/local/bin
+ln -s path/to/some/executable
+```
+
+Then you'll be able to launch stuff just by naming it like anything else!
+
+
+#### Git
+
+Git is an example of "version control" software.  Version control refers to the task of managing changes made to text files.  You know that bullshit where people email files back and forth for review, appending their initials to the filename to indicate that it contains their edits?  Or that bullshit where successive versions of a document exist as separate files with ever multiplying copies of "-FINAL" appended to their names? Those are crimes committed by people who don't know about git.  Don't be those people.
+
+This is all better explained elsewhere, but roughly speaking, Git creates a timeline for your files.  A repository is a collection of files within a directory which are tracked by git as a group. You can `commit` a set of changes, creating a bookmarked point in the timeline of those files that can be referenced later on.  You can (and must) annotate your commits, describing what you changed and why.  You can revert individual files to their state in previous commits, compare files between commits, and otherwise maintain useful track of all the changes you've ever committed.  A commit isn't too committal, it's just a placemarker.
+
+[Github](https://github.com/) (likely where you're reading this, if you're reading it in your browser) is a website which serves git repositories.  Once again--Github is a website, git is a commandline tool.  Github houses a centralized collection of git repositories, and provides a nice web interface for tracking issues, managing collaborations, and other tasks peripheral to the actual writing of the code itself.
+
+By bundling file changes together into commits, git allows code collaboration in a way that's otherwise infeasible.  Two (or hundreds of) people can make different edits to the same repository, then push them to the remote repository on Github--their changes will be reconciled (largely) automatically.  Manual intervention is required only when irreconcilable changes have been made. Github also makes it possible for other people to download and use the repository code, even if they don't intend to participate in its development.
+
+Here is a basic use case:
+
+ 1) Navigate to https://github.com/bhattlab/bhattlab_workflows
+ 2) Click the green *Clone or download* button and copy the link that appears
+
+```
+# 3) Clone the repository.  If you're only planning on using the code without modifying it, you're done.
+git clone https://github.com/bhattlab/bhattlab_workflows.git`
+
+# 4) Make changes
+
+# 5) View changes
+git status
+git diff <some_filename.foo>
+
+# 6) Prepare a new commit by adding changed files to it
+git add <some_changed_file.foo> <some_other_thing.bar>
+
+# 7) Create the new commit.  Normally the -m flag isn't used and a longform commit message is written, but let's start small here.
+git commit -m "Describe your changes briefly"
+
+# 8) Upload your changes back to the original repository for others to use
+git push
+```
+
+## This document is part of a git repository that is housed on Github.  If you can think of improvements or additions to make, please follow these instructions in order to make those changes, commit them and push them to the remote repository for others to benefit from.
+
+
+
+
