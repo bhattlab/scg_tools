@@ -30,7 +30,7 @@ http://graphite.scg.stanford.edu/S/V
 
 The charges you accrue by running jobs on the cluster is a function of (elapsed walltime) * (allocated cores). Memory is not considered in determining cost. If you allocate eight cores, your job will cost eight times as much as a job with a single core allocated.  This is true regardless of whether your job is actually using all the cores!  It is therefore important to use your cpu allocation efficiently.  
 
-## Intro to cluster computing
+# Intro to cluster computing
 
 Please note that everything described here is described more comprehensively elsewhere!  Always read the documentation and/or publications for the tools you use.  Sacrifices in accuracy and thoroughness are made in the interest of basic conceptual scaffolding.
 
@@ -135,7 +135,7 @@ Here is a basic use case:
 # 3) Clone the repository.  If you're only planning on using the code without modifying it, you're done.
 git clone https://github.com/bhattlab/scg_tools.git`
 
-# 4) Make changes
+# 4) (Make changes)
 
 # 5) View changes
 git status
@@ -165,6 +165,20 @@ ln -s /absolute/path/to/some/executable
 ```
 
 Then you'll be able to launch the executable without a complete path to its location!
+
+### Using Snakemake with the Cluster
+
+Snakemake is a workflow manager.  It takes a multi-step process, such as data QC or metagenomic binning and annotation, and takes care of scheduling and executing the various steps when needed, in the correct sequence, and at the correct time. In order for Snakemake to use the computing power of the cluster, it needs to know how to submit jobs to the scheduler.  The scheduler is an algorithm which accepts job requests from all users of the cluster and schedules them for execution in a way that is (theoretically) fair to everyone.  Sometimes, if demand on the cluster is high, you will have to wait for your jobs to execute. The specific type of scheduler used on SCG is SLURM.  In order for Snakemake to know how to use SLURM, it needs to have a profile installed containing the tools Snakemake will use to submit and monitor jobs. We have prepared the [Bhattlab's SLURM Snakemake profile for SCG](https://github.com/bhattlab/slurm) for just this purpose.  Please see that repo for installation instructions.  Once installed, simply adding `--profile scg` to a Snakemake command will cause it to outsource job execution to the cluster!  Further, adding `--cluster-config <path/to/scg.yaml>` referring to a file formatted as 
+
+```
+rulename:
+	partition: nih_s10
+another_rulename:
+	partition: batch
+```
+
+will allow you to specify the SCG partition you want a job to execute on.  This is useful because the nih_s10 partition contains the UV300 supercomputer with 15Tb of RAM and 720 cores.
+
 
 ### Next steps
 
