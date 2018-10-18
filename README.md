@@ -94,7 +94,9 @@ cd /labs/asbhatt/
 mkdir -p <yourfoldername>/tools
 cd <yourfoldername>/tools
 wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+chmod u+x ./Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh
+#it will be necessary to answer some prompts. Just hit enter or type yes. To exit the license agreement type :q
 ```
 
 Once you have done this, you have access to your very own copy of Python, together with its package manager, Conda.  Verify that you are using the correct version of Python and Conda with the following:
