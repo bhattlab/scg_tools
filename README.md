@@ -206,11 +206,15 @@ arrow keys   move between panes
 PgUp enter   scroll mode for current pane
 ```
 
-As you can see from the screenshot below, using tmux allows you to multiplex several tasks in the same window. Here I'm editiing a Sankefile, executing it, and watchin my cluster jobs all at the same time. Once you get comfortable with windows and panes this will be a huge productivity boost. After you close your teminal session and open back up, reconnecting to the tmux session will allow you to pick up work right where you left off.
+As you can see from the screenshot below, using tmux allows you to multiplex several tasks in the same window. Here I'm editiing a Sankefile, executing it, and watching my cluster jobs all at the same time. To get this configuration, I simply used the horizontal pane split command twice. `prefix + arrow` allows you to move between panes. Once you get comfortable with windows and panes this will be a huge productivity boost. After you close your teminal session and open back up, reconnecting to the tmux session will allow you to pick up work right where you left off.
 ![tmux wizardry](images/tmux_wizardry.png "Using tmux allows you to multiplex several tasks in the same windows")
 
-To resume a tmux session, type `tmux attach`. To make this easy, I have put the following aliases in my `~/.bash_aliases` file (and make sure there is a corresponding line `source ~/bash_aliases` in your `~/.bashrc` file). This gets you back to the same login node every time and attaches to your active tmux session. So when I login to the cluster, I type `go1` and `go2` and I'm right back where I left off.
+To resume a tmux session, type `tmux attach`. To make this easy, I have put the following aliases in my `~/.bash_aliases` file (and make sure there is a corresponding line `source ~/bash_aliases` in your `~/.bashrc` file). This gets you back to the same login node every time and attaches to your active tmux session. So when I login to the cluster, I type `go1` and `go2` and I'm right back where I left off. You might need to change the ssh address here, but it's a template at least. 
 ```
 alias go1='ssh smsx10srw-srcf-d15-35'
 alias go2='tmux attach'
 ```
+Note that X forwarding and rendering plots can get a bit messy when using tmux. Contact Ben if you have issues with it, there are simple workarounds. 
+
+#### custom .bashrc and .bash_aliases
+Use linux and a cluster for a while and you'll accumulate a "bag of tricks" that allows you to get work done quicker. The [bash_tricks.sh](bash_tricks.sh) file has a list of these for you to try and use!
