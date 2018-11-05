@@ -71,12 +71,16 @@ Host login.scg.stanford.edu
 
 The files you work with--sequence data, alignments, reference genomes and so on--reside on the cluster, and should never be stored on your computer (i.e. "locally"). Beyond security reasons, this is simply for efficiency and simplicity; your computer is small, slow, and isolated, so should only be used as an interface to connect to the cluster.  However, it is frequently convenient to be able to open files with programs running on your computer, or exchange small items back and forth (like plots or what have you).  For this reason, it is useful to "mount" the cluster's filesystem on your computer--almost as though it were a huge USB flash drive.  This allows you to navigate the cluster's filesystem as though it were on your computer, viewing and manipulating files from the cluster as though they were local.
 
+Note: these commands must be run locally--that is, not within an SSH session.
+
+
  1) Download and install [fuse](https://github.com/osxfuse/osxfuse/releases/download/osxfuse-3.8.2/osxfuse-3.8.2.dmg) and [sshfs](https://github.com/osxfuse/sshfs/releases/download/osxfuse-sshfs-2.5.0/sshfs-2.5.0.pkg).
  2) Open Terminal and enter the following, replacing your sunetid where appropriate:
 
 ```
 mkdir ~/scg4
-echo 'alias sf="diskutil unmount force ~/scg4_home; sshfs -o follow_symlinks YOURSUNETID@login.scg.stanford.edu:/labs/asbhatt/ ~/scg4"' >> ~/.profile
+echo 'alias sf="diskutil unmount force ~/scg4; \
+sshfs -o follow_symlinks YOURSUNETID@login.scg.stanford.edu:/labs/asbhatt/ ~/scg4"' >> ~/.profile
 source ~/.profile
 ```
 
