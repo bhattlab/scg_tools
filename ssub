@@ -12,34 +12,40 @@ parser.add_argument('-a', type=str, default="asbhatt",
                     help='account [asbhatt]')
 parser.add_argument('-d', type=str,
                     help='Job dependency (jobid)')
-parser.add_argument('-t', type=int, default=1,
+parser.add_argument('-c', type=int, default=1,
                     help='number of cores [1]')
-parser.add_argument('-hrs', default=6, type = int,
+parser.add_argument('-ntasks', type=int, default=1,
+                    help='number of tasks [1]')
+parser.add_argument('-t', default=6, type = int,
                     help='time allocation in hours [6]')
-parser.add_argument('--mail', help="Update user on job status changes through email", action='store_true')
-
+parser.add_argument('--mail', action='store_true',
+                    help="Update user on job status changes through email")
 parser.add_argument('-n', metavar="jobname", type=str, required = True,
                     help='Name your job something pithy')
 parser.add_argument('command', type=str, nargs='+',
                     help='command to submit to SLURM')
+parser.add_argument('-debug', action='store_true',
+                    help='Print sbatch command before executing.')
 
 args = parser.parse_args()
 
-sub = 'sbatch -J {jobname} -t {time_alloc}:00:00 -p {batch} -n {cores} --mem={mem} -A {acct} -o {jobname}.out -e {jobname}.err --wrap="{command}"'.format(
-	batch = 'nih_s10' if args.nih else 'batch',
-	jobname = args.n,
-	time_alloc = args.hrs,
-	cores = args.t,
-	mem = int(args.m)*1000,
-	command=' '.join(args.command),
-	acct = args.a
+sub = 'sbatch -J {jobname} -t {time_alloc}:00:00 -p {batch} -n {ntasks}  -c {cpus_per_task} --mem={mem} -A {acct} -o {jobname}.out -e {jobname}.err --wrap="{command}"'.format(
+    batch = 'nih_s10' if args.nih else 'batch',
+    jobname = args.n,
+    time_alloc = args.t,
+    ntasks = args.ntasks, 
+    mem = int(args.m)*1000,
+    command=' '.join(args.command),
+    acct = args.a,
+    cpus_per_task = args.c,
 )
 
 if args.mail:
-	sub += " --mail-type=ALL --mail-user=$(whoami)@stanford.edu "
+    sub += " --mail-type=ALL --mail-user=$(whoami)@stanford.edu "
 
 if args.d:
-	print("Incorporating job dependency")
-	sub += ' -d afterany:{dep}'.format(dep = args.d)
+    print("Incorporating job dependency")
+    sub += ' -d afterany:{dep}'.format(dep = args.d)
 
-os.system(sub)
+if args.debug: print(sub)
+# os.system(sub)
