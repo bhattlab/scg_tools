@@ -48,4 +48,4 @@ if args.d:
     sub += ' -d afterany:{dep}'.format(dep = args.d)
 
 if args.debug: print(sub)
-# os.system(sub)
+os.system(sub)
