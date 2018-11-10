@@ -2,6 +2,8 @@
 
 Useful utilities and some collected knowledge for using the Stanford SCG cluster.
 
+*Questions? Ask them as issue reports, and answers will be added to this document!*
+
 ## Utilities
 *ssub*: submit jobs  
 *inter*: launch interactive sessions  
@@ -48,7 +50,7 @@ There is an ongoing effort in the lab to codify analytical processes in snakemak
 
 #### SSH connection to the cluster
 
-In OSX, we use the Terminal application to use the cluster.  In Windows, Cygwin works.  To access the cluster, simply `ssh <your sunetid>@login.scg.stanford.edu` and authenticate.  To avoid the need to authenticate multiple times per day, you can set up a master connection by writing the following to `.ssh/config` on your local machine, after which you can `ssh scg` one time, then connect normally as above without having to authenticate.
+In OSX, we use the Terminal application to use the cluster.  In Windows, Cygwin works.  To access the cluster, simply `ssh <your sunetid>@login.scg.stanford.edu` and authenticate.  To avoid the need to authenticate multiple times per day, you can set up a master connection by writing the following to `.ssh/config` on your local machine, after which you can `ssh scg` one time, then connect normally as above without having to authenticate.  Please note you need to `mkdir ~/.ssh/sockets` for the below to work.
 
 ```
 Host scg
@@ -72,11 +74,11 @@ Host login.scg.stanford.edu
 The files you work with--sequence data, alignments, reference genomes and so on--reside on the cluster, and should never be stored on your computer (i.e. "locally"). Beyond security reasons, this is simply for efficiency and simplicity; your computer is small, slow, and isolated, so should only be used as an interface to connect to the cluster.  However, it is frequently convenient to be able to open files with programs running on your computer, or exchange small items back and forth (like plots or what have you).  For this reason, it is useful to "mount" the cluster's filesystem on your computer--almost as though it were a huge USB flash drive.  This allows you to navigate the cluster's filesystem as though it were on your computer, viewing and manipulating files from the cluster as though they were local.
 
  1) Download and install [fuse](https://github.com/osxfuse/osxfuse/releases/download/osxfuse-3.8.2/osxfuse-3.8.2.dmg) and [sshfs](https://github.com/osxfuse/sshfs/releases/download/osxfuse-sshfs-2.5.0/sshfs-2.5.0.pkg).
- 2) Open Terminal and enter the following, replacing your sunetid where appropriate:
+ 2) Open Terminal and enter the following, replacing YOURSUNETID with your sunet id where appropriate:
 
 ```
 mkdir ~/scg4
-echo 'alias sf="diskutil unmount force ~/scg4_home; sshfs -o follow_symlinks YOURSUNETID@login.scg.stanford.edu:/labs/asbhatt/ ~/scg4"' >> ~/.profile
+echo 'alias sf="diskutil unmount force ~/scg4; sshfs -o follow_symlinks YOURSUNETID@login.scg.stanford.edu:/labs/asbhatt/ ~/scg4"' >> ~/.profile
 source ~/.profile
 ```
 
@@ -118,6 +120,12 @@ In addition to using Conda to install stuff into the default environment, you ca
 
  3) Ian would like to run a workflow.  The workflow uses several standalone tools, and several scripts utilizing libraries in R and Python.  In order to run this workflow he must first install its dependencies, which are helpfully written into a `environment.yaml` file that came with the workflow repository (see the section below on Git).  To set up a new environment containing all the workflow dependencies, Ian simply uses `conda env create -f environment.yaml`, replacing hours or days of compiling dependencies from source (back in my day...).
 
+#### Running Snakemake workflows
+
+ Once you have set up an environment as above, you are then ready to run a workflow.  Example workflows can be found at [Eli's collection](https://github.com/elimoss/metagenomics_workflows) or at the [lab workflow repo](https://github.com/bhattlab/bhattlab_workflows) with documentation on how this is done.  
+
+ Here's the brief version: you'll activate your environment, then call `snakemake -s path/to/snakefile --configfile path/to/configfile.yaml`, and probably add `--profile scg` in order to submit jobs to the cluster once you've set that up as described [here](https://github.com/bhattlab/slurm). The snakefile is provided in the workflow repository; use that as-is, where-is.  A template for the configfile is found in the workflow repository, but you'll need to copy this to your working directory and make changes to it in order to provide the workflow with the information it needs.
+
 #### Git
 
 Git is an example of "version control" software.  Version control refers to the task of managing changes made to text files.  You know that bullshit where people email files back and forth for review, appending their initials to the filename to indicate that it contains their edits?  Or that bullshit where successive versions of a document exist as separate files with ever multiplying copies of "-FINAL" appended to their names? Those are crimes committed by people who don't know about git.  Don't be those people.
@@ -135,7 +143,7 @@ Here is a basic use case:
 
 ```
 # 3) Clone the repository.  If you're only planning on using the code without modifying it, you're done.
-git clone https://github.com/bhattlab/scg_tools.git`
+git clone https://github.com/bhattlab/scg_tools.git
 
 # 4) (Make changes)
 
@@ -179,7 +187,7 @@ another_rulename:
 	partition: batch
 ```
 
-will allow you to specify the SCG partition you want a job to execute on.  This is useful because the nih_s10 partition contains the UV300 supercomputer with 15Tb of RAM and 720 cores.
+will allow you to specify the SCG partition you want a job to execute on.  This is useful because the nih_s10 partition contains the UV300 supercomputer with 15Tb of RAM and 720 cores, and it even works sometimes.
 
 
 ### Next steps
