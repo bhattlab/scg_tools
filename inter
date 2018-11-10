@@ -6,16 +6,30 @@ import os
 parser = argparse.ArgumentParser(description='Simple interactive job submission to SCG/SLURM')
 parser.add_argument('-m', type=int, default=4,
                     help='memory allocation in Gb [4]')
-parser.add_argument('-t', type=int, default=1,
-                    help='number of cores [1]')
-parser.add_argument('-hrs', default=6, type = int,
+parser.add_argument('-n', type=int, default=1,
+                    help='number of tasks [1]')
+parser.add_argument('-t', default=6, type = int,
                     help='time allocation in hours [6]')
+parser.add_argument('-c', default=1, type = int, 
+                    help='number of cpus per task [1]')
+parser.add_argument('-nih', action='store_true',
+                    help='Use the nih_s10 partition for free compute!')
+parser.add_argument('-a', type=str, default="asbhatt",
+                    help='account [asbhatt]')
+parser.add_argument('-debug', action='store_true',
+                    help='Print srun command before executing.')
 
 args = parser.parse_args()
 
-sub = 'srun -t {time_alloc}:00:00 -p "interactive" -n {cores} --mem={mem} --pty bash'.format(
-	time_alloc = args.hrs,
-	cores = args.t,
-	mem = int(args.m)*1000)
+sub = 'srun -t {time_alloc}:00:00 -p {batch} {account} -n {ntasks} -c {cpus_per_task} --mem={mem} --pty bash'.format(
+    time_alloc = args.t,
+    ntasks = args.n,
+    cpus_per_task = args.c,
+    mem = int(args.m)*1000,
+    batch = 'nih_s10' if args.nih else 'interactive',
+    account = "-A" + args.a if args.nih else ''
+    )
 
+if args.debug: print(sub)
 os.system(sub)
+
