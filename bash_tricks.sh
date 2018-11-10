@@ -29,8 +29,21 @@ END {
 }' $1;}
 
 
+#sequence file stuff
+#=========
+#pull read sequences from a fastq
+cat blar.fastq | paste - - - - | cut -f2
 
+#what are the largest contigs in an assembly?
+samtools faidx sequence.fa
+sort -k2,2gr sequence.fa.fai | head
 
+#uniquefy the sequence identifiers in a fasta by appending _2, _3 etc to repeated id's
+cat sequences.fa | awk '(/^>/ && s[$0]++){{$0=$0\"_\"s[$0]}}1;' > uniquefied.fa
+
+#for several fasta files, submit a job to the cluster to count homopolymers of length 5
+ls fasta_dir/*.fasta | xargs -n 1 -I foo ssub -n count_homopolymers "cat foo | grep -E '(.)\1{4}' -o | wc -l > foo.count"
+#=========
 
 
 
