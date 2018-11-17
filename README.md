@@ -82,7 +82,7 @@ Note: these commands must be run locally--that is, not within an SSH session.
 ```
 mkdir ~/scg4
 echo 'alias sf="diskutil unmount force ~/scg4; \
-sshfs -o follow_symlinks YOURSUNETID@login.scg.stanford.edu:/labs/asbhatt/ ~/scg4"' >> ~/.profile
+sshfs -o follow_symlinks YOURSUNETID@login.scg.stanford.edu:/labs/asbhatt/YOURFOLDER ~/scg4"' >> ~/.profile
 source ~/.profile
 ```
 
