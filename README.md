@@ -50,7 +50,9 @@ There is an ongoing effort in the lab to codify analytical processes in snakemak
 
 #### SSH connection to the cluster
 
-In OSX, we use the Terminal application to use the cluster.  In Windows, Cygwin works.  To access the cluster, simply `ssh <your sunetid>@login.scg.stanford.edu` and authenticate.  To avoid the need to authenticate multiple times per day, you can set up a master connection by writing the following to `.ssh/config` on your local machine, after which you can `ssh scg` one time, then connect normally as above without having to authenticate.  Please note you need to `mkdir ~/.ssh/sockets` for the below to work.
+In OSX, we use the Terminal application to use the cluster.  In Windows, Cygwin works.  To access the cluster, simply `ssh <your sunetid>@login.scg.stanford.edu` and authenticate.  To avoid the need to authenticate multiple times per day, you can set up a master connection by writing the following to `.ssh/config` on your local machine, after which you can `ssh scg` one time, then connect normally as above without having to authenticate.  Please note you need to `mkdir ~/.ssh/sockets` for the below to work, and fill in your sunetid where it says `User`
+
+The frst time you connect to scg for the day, you type `ssh scg` and this will set up the master connection. This connection must remain open for subsequent connections to use it. If you need to open another scg terminal, you can type `ssh login.scg.stanford.edu` to use the existing master connection. You could also set up alias commands to make these login prompts quicker. 
 
 ```
 Host scg
@@ -59,7 +61,7 @@ Host scg
   PubkeyAuthentication no
   ControlMaster yes
   ControlPath ~/.ssh/sockets/scg
-  ControlPersist 10
+  ControlPersist 600
 
 Host login.scg.stanford.edu
   HostName login.scg.stanford.edu
@@ -68,6 +70,10 @@ Host login.scg.stanford.edu
   ControlMaster no
   ControlPath ~/.ssh/sockets/scg
 ```
+
+You can also set up SSH [public key authentication](https://www.ssh.com/ssh/public-key-authentication), a more secure way to connect to SCG that uses encryption keys rather than a password. Read the link above for a general overview, then follow [these instructions](https://www.linode.com/docs/security/authentication/use-public-key-authentication-with-ssh/) to set up your public/private key pair.  If you use public key authentication, you'll need to change the `PubkeyAuthentication no` line in the above config to `PubkeyAuthentication yes`
+
+Logging in to SCG requires two-factor authentication. The best way to do this is to use the DuoMobile app (rather than waiting for text messages or a phone call). Instructions [here](https://uit.stanford.edu/service/authentication/twostep/smartphone).
 
 #### Filesystem access to the cluster
 
