@@ -1,0 +1,3 @@
+#!/usr/bin/env bash 
+
+sinfo -h -o "%n %T %E" | sort -u
