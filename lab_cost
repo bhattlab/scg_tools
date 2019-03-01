@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+export rate='0.05'
+echo Computing costs based on \$$rate/cpu-hour
+
 #add users here
 declare -a arr=("elimoss" "mdurrant" "bfremin" "tamburin" "jribado" "hsberrol" "bsiranos")
 
@@ -7,6 +10,6 @@ echo Reporting usage for: ${arr[@]}
 for i in "${arr[@]}"
 do
  echo $(sacct -S $(date --date='last week' +%Y-%m-%d) -u $i --format 'elapsedraw' | \
-  sed '1,2d' | tr -d ' ' | paste -sd+ | bc)*0.05/3600 | bc | xargs echo $i last week: \$ | \
+  sed '1,2d' | tr -d ' ' | paste -sd+ | bc)*$rate/3600 | bc | xargs echo $i last week: \$ | \
   sed 's/$ /$/g' &
 done
