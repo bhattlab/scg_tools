@@ -1,0 +1,1 @@
+echo grep -P \'$(readlink -f $1 | sed 's/\/labs\/asbhatt\//\\t\\.\//g')$\' /labs/asbhatt/STORAGE_USAGE_*.txt | bash
