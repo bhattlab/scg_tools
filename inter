@@ -4,8 +4,8 @@ import argparse
 import os
 
 parser = argparse.ArgumentParser(description='Simple interactive job submission to SCG/SLURM')
-parser.add_argument('-m', type=int, default=4,
-                    help='memory allocation in Gb [4]')
+parser.add_argument('-m', type=int, default=1,
+                    help='memory allocation in Gb [1]')
 parser.add_argument('-n', type=int, default=1,
                     help='number of tasks [1]')
 parser.add_argument('-t', default=6, type = int,
@@ -18,16 +18,22 @@ parser.add_argument('-a', type=str, default="asbhatt",
                     help='account [asbhatt]')
 parser.add_argument('-debug', action='store_true',
                     help='Print srun command before executing.')
+parser.add_argument('--amd', action='store_true',
+			help='Restrict the session to nodes with an amd cpu')
+parser.add_argument('--intel', action='store_true',
+                        help='Restrict the session to nodes with an intel cpu')
 
 args = parser.parse_args()
 
-sub = 'srun -t {time_alloc}:00:00 -p {batch} {account} -n {ntasks} -c {cpus_per_task} --mem={mem} --pty bash'.format(
+sub = 'srun -t {time_alloc}:00:00 -p {batch} {account} -n {ntasks} -c {cpus_per_task} --mem={mem} {arch_amd} {arch_intel} --pty bash'.format(
     time_alloc = args.t,
     ntasks = args.n,
     cpus_per_task = args.c,
     mem = int(args.m)*1000,
     batch = 'nih_s10' if args.nih else 'interactive',
-    account = "-A" + args.a if args.nih else ''
+    account = "-A" + args.a if args.nih else '',
+    arch_amd = "--constraint=amd" if args.amd else '',
+    arch_intel = "--constraint=intel" if args.intel else ''
     )
 
 if args.debug: print(sub)
